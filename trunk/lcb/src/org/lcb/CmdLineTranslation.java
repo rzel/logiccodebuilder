@@ -4,6 +4,7 @@ import java.awt.Toolkit;
 import java.io.File;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 import org.lcb.help.Help;
 import org.lcb.monitor.ChangeListener;
@@ -29,19 +30,44 @@ public class CmdLineTranslation
     }
   }
   
-  public void doTranslation(final File file) throws Exception
+  public String doTranslation(final File file) throws Exception
   {
     if (file.exists()) 
     {
       ioManager = new IOManager(file);
       logicCodeBuilder = new LogicCodeBuilder(ioManager);
       logicCodeBuilder.doTranslation();
-      startMonitor();        
+      startMonitor();
+      return ioManager.getOutputFile().getAbsolutePath();
     }
     else
     {
       System.err.println(file);
       Help.getHelp().printConfigFileNotFound();
+      return "";
+    }
+  }
+  
+  private static void useBasicGui()
+  {
+    try
+    {
+      final JFileChooser fc = new JFileChooser();
+      fc.addChoosableFileFilter(new LcbFilter());
+      fc.setDialogType(JFileChooser.OPEN_DIALOG);
+      fc.setDialogTitle("LCB Project File");
+      fc.setCurrentDirectory(new File("."));
+      fc.showOpenDialog(null);          
+      if (fc.getSelectedFile() != null)
+      {
+        final String out = new CmdLineTranslation().doTranslation(fc.getSelectedFile());
+        JOptionPane.showMessageDialog(null, "Code successfully generated.\n Output file: \n"+out, "Logic Code Builder", JOptionPane.INFORMATION_MESSAGE);
+      }
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      JOptionPane.showMessageDialog(null, "Error. "+e.getMessage(), "Logic Code Builder", JOptionPane.ERROR_MESSAGE);
     }
   }
   
@@ -54,15 +80,7 @@ public class CmdLineTranslation
         if (new File("lcb-conf.xml").exists())
           new CmdLineTranslation().doTranslation(new File("lcb-conf.xml"));
         else
-        {
-          final JFileChooser fc = new JFileChooser();
-          fc.setDialogType(JFileChooser.OPEN_DIALOG);
-          fc.setDialogTitle("LCB Project File");
-          fc.setCurrentDirectory(new File("."));
-          fc.showOpenDialog(null);          
-          if (fc.getSelectedFile() != null)
-            new CmdLineTranslation().doTranslation(fc.getSelectedFile());
-        }
+          useBasicGui();
       }
       else
         for (String arg : args)
@@ -92,4 +110,20 @@ public class CmdLineTranslation
       }
     }
   }
+  
+  private static class LcbFilter extends javax.swing.filechooser.FileFilter 
+  {
+    public boolean accept(File file) 
+    {
+      if (file.isDirectory())
+        return true;
+      
+      final String filename = file.getName();
+      return filename.endsWith(".lcb.xml");
+    }
+    public String getDescription() 
+    {
+        return "*.lcb.xml";
+    }
+}
 }

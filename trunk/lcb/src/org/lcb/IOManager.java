@@ -17,8 +17,6 @@ public class IOManager
   private static final String XML_MAIN_TEMPLATE = "main-template";
   private static final String XML_OUT           = "out";
   private static final String XML_IN            = "in";
-  private static final String PATH              = "path";
-  private static final String TEMPLATES         = "templates";  
 
 
   private static final String NEWLINE = LogicCodeBuilder.NEWLINE;  
@@ -38,14 +36,18 @@ public class IOManager
   
   public void writeMainOut(String code) throws IOException 
   {
-    final XMLElement xmlMain  = getConf().getChild(XML_MAIN_TEMPLATE);
-    final File fOutput      = findFile(xmlMain.getAttr(XML_OUT));
-    
-    final FileWriter output = new FileWriter(fOutput);
+    final FileWriter output = new FileWriter(getOutputFile());
     output.write(code);
     output.close();
     
-    System.out.println("Code successfully generated. "+ fOutput.getAbsolutePath());
+    System.out.println("Code successfully generated. "+ getOutputFile().getAbsolutePath());
+  }
+  
+  public File getOutputFile()
+  {
+    final XMLElement xmlMain  = getConf().getChild(XML_MAIN_TEMPLATE);
+    final File fOutput = findFile(xmlMain.getAttr(XML_OUT));
+    return fOutput;
   }
   
   public String loadMainTemplate() throws Exception
@@ -54,11 +56,6 @@ public class IOManager
     final String fTemplate = xmlMain.getAttr(XML_IN);
     
     return loadText(fTemplate);
-  }
-  
-  public String getTemplatesPath()
-  {
-    return getConf().getChild(TEMPLATES).getAttr(PATH);
   }
   
   private String loadText(String file) throws Exception

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="test"/>
+	<classpathentry excluding="**/.svn/|.svn/" kind="src" path="src"/>
+	<classpathentry excluding="**/.svn/|.svn/" kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="../third-party/stringtemplates/stringtemplate.jar"/>
-	<classpathentry kind="lib" path="../third-party/stringtemplates/antlr-2.7.7.jar"/>
+	<classpathentry kind="lib" path="H:/lcb-projects/third-party/stringtemplates/stringtemplate.jar"/>
+	<classpathentry kind="lib" path="H:/lcb-projects/third-party/stringtemplates/antlr-2.7.7.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

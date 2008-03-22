@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+  <project name="project" default="all" basedir=".">
+		
+    <target name="init">    	
+	    <property name="project_name" value="LCB"/>
+	    <property name="srcDir" value="./lcb/src"/>
+	    <property name="downloads" value="./downloads"/>
+	    <property name="build" value="./build"/>
+	    <property name="classDir" value="${build}/classes"/>
+	    <property name="jar" value="${downloads}/${project_name}.jar"/>
+	    <property name="mainclass" value="org.lcb.CmdLineTranslation"/>
+	    <property name="third-party" value="./third-party"/>
+	    
+	    <mkdir dir="${downloads}" />
+	    <mkdir dir="${build}" />
+	    <mkdir dir="${classDir}" />
+	    <mkdir dir="${classDir}/stringtemplate" />
+	    <echo> build dir is ${build}</echo>
+    </target>
+
+    <!-- compile -->
+    <target name="compile">
+      <javac 	srcdir="${srcDir}" destdir="${classDir}"
+    			 		source="1.5" target="1.5"
+    			 		classpath="${third-party}/stringtemplates/antlr-2.7.7.jar;${third-party}/stringtemplates/stringtemplate.jar"
+      />
+    </target>
+
+    <!-- create .jar -->
+    <target name="jar">
+    
+    	<unzip src="${third-party}/stringtemplates/antlr-2.7.7.jar" dest="${classDir}"/>
+    	<unzip src="${third-party}/stringtemplates/stringtemplate.jar" dest="${classDir}"/>
+    	
+			<copy todir="${classDir}/stringtemplate" overwrite="true">
+		    <fileset dir="${third-party}/stringtemplates">
+		      <include name="**/*.txt" />
+		    </fileset>
+		  </copy>
+		  
+			<copy todir="${classDir}"  overwrite="true">
+		    <fileset dir="${srcDir}">
+		      <include name="**/*.xml" />
+		      <include name="**/*.st" />
+		    </fileset>
+		  </copy>
+		  
+      <jar 	jarfile="${jar}"
+        		basedir="${classDir}"
+        		includes="**">
+        		<manifest>
+				      <attribute name="Main-Class" value="${mainclass}"/>
+				    </manifest>
+      </jar>
+    </target>
+
+    <!-- run project -->
+    <target name="run">
+      <java classname="${mainclass}" fork="true">
+      <classpath>
+        <pathelement location="${obfjar}"/>
+      </classpath>
+      </java>
+    </target>
+
+    <!-- removes all that has been built -->
+    <target name="clean">
+      <delete dir="${build}" includeEmptyDirs="true" />
+    </target>
+    
+    <target name="all" depends="clean, init, compile, jar" description="LBC Build">
+		</target>
+
+</project>
+<!-- end file build.xml -->

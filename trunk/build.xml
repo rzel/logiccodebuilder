@@ -2,13 +2,16 @@
 
   <project name="project" default="all" basedir=".">
 		
-    <target name="init">    	
-	    <property name="project_name" value="LCB"/>
+    <target name="init">
+    	<property name="version" value="1.0.0"/>
+    
+	    <property name="project_name" value="LCB"/>	    
+	    <property name="projectDir" value="./lcb"/>
 	    <property name="srcDir" value="./lcb/src"/>
 	    <property name="downloads" value="./downloads"/>
 	    <property name="build" value="./build"/>
 	    <property name="classDir" value="${build}/classes"/>
-	    <property name="jar" value="${downloads}/${project_name}.jar"/>
+	    <property name="jar" value="${downloads}/${project_name} ${version}.jar"/>
 	    <property name="mainclass" value="org.lcb.CmdLineTranslation"/>
 	    <property name="third-party" value="./third-party"/>
 	    
@@ -45,14 +48,19 @@
 		      <include name="**/*.st" />
 		    </fileset>
 		  </copy>
-		  
+		  		  		  
       <jar 	jarfile="${jar}"
-        		basedir="${classDir}"
-        		includes="**">
+        		basedir="${classDir}">
+        		
         		<manifest>
 				      <attribute name="Main-Class" value="${mainclass}"/>
 				    </manifest>
       </jar>
+      
+      <zip destfile="${downloads}/samples ${version}.zip">
+    		<fileset dir="./samples" excludes="*.svn"/>
+  		</zip>
+  		
     </target>
 
     <!-- run project -->

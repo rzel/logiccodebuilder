@@ -1,0 +1,37 @@
+
+
+<lcb>
+        <!-- properties
+          	  argsdef="" 									(Optional. Default "") Arguments definition, each method created by LCB will contans this value in declaration. see argsval
+              argsval="" 									(Optional. Default "") each call to a method created by LCB will use this value as a parameter, see argsdef
+              statements-tag="statements" (Optional. Default "statements"), tag in the main template
+              methods-tag="methods"       (Optional. Default "methods"), tag in the main template
+              use-methods="true"          (Optional. Default "true"), this will enable or disable the creation of methods
+              use-methods-graph-size="2"  (Optional. Default "2"), Minimum number of nodes below required to generate a method
+              use-auto-methods="true"     (Optional. Default "true"), Auto generate methods when 2 or more flows arrive to one node
+              method-prefix="stup"        (Optional. Default "stup"), Auto methods will have this prefix plus a number. example: stup1(), stup2()
+        -->
+	<properties
+        use-methods="true"
+        use-auto-methods="true"
+        use-methods-graph-size="2"
+        method-prefix="stup"
+        argsval=""
+        argsdef=""
+	/>
+
+    <templates statements="templates/debug-java/statements.st"
+               methods="templates/debug-java/methods.st" />
+
+	<graph>
+	    <app class="org.lcb.graphs.yed.YEdApp"
+		    file="GraphSample1.graphml"
+		/>
+	</graph>
+
+	<main-template
+	    in="LogicSample1.java.st"
+	    out="../../org/lcb/samples/sample1/Sample1Logic.java"
+	/>
+
+</lcb>

@@ -2,8 +2,8 @@
 
 <lcb>
         <!-- properties
-          	  argsdef="" 									(Optional. Default "") Arguments definition, each method created by LCB will contans this value in declaration. see argsval
-              argsval="" 									(Optional. Default "") each call to a method created by LCB will use this value as a parameter, see argsdef
+          	  argsdef="" 				  (Optional. Default "") Arguments definition, each method created by LCB will contans this value in declaration. see argsval
+              argsval="" 				  (Optional. Default "") each call to a method created by LCB will use this value as a parameter, see argsdef
               statements-tag="statements" (Optional. Default "statements"), tag in the main template
               methods-tag="methods"       (Optional. Default "methods"), tag in the main template
               use-methods="true"          (Optional. Default "true"), this will enable or disable the creation of methods
@@ -31,7 +31,7 @@
 
 	<main-template
 	    in="LogicSample1.java.st"
-	    out="../../org/lcb/samples/sample1/Sample1Logic.java"
+	    out="../src/org/lcb/samples/sample1/Sample1Logic.java"
 	/>
 
 </lcb>

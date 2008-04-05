@@ -28,7 +28,8 @@ public class GraphYEd implements IGraphData<XMLElement, XMLElement>
       final XMLElement xmlYEd = XMLUtils.load(xmlData);
       final XMLElement xmlGraph = xmlYEd.getChild("graph");
       
-      fillXMLNodes(xmlGraph);      
+      fillXMLNodes(xmlGraph);
+      
       xmlStart = findStart();
       if (xmlStart == null)
       {
@@ -63,12 +64,12 @@ public class GraphYEd implements IGraphData<XMLElement, XMLElement>
       else if (element.getName().equals("edge"))
         xmlEdges.addChild(element);
       
-      final XMLElement[] children = xmlGraph.getChildren();
+      final XMLElement[] children = element.getChildren();
       for (XMLElement graph : children)
         fillXMLNodes(graph);
     }    
   }
-  
+
   private XMLElement findStart()
   {     
     final Set<String> sources = new HashSet<String>();

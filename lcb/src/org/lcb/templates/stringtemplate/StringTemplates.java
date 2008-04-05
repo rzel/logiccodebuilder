@@ -21,7 +21,7 @@ public class StringTemplates
   public void configure(IOManager ioManager, XMLElement conf) throws Exception
   {
      //templates = new StringTemplateGroup("templates",ioManager.getTemplatesPath());
-     
+    
     stmtGroup = new StringTemplateGroup(new InputStreamReader(ioManager.findResource(conf.getAttr("statements"))));
     methodsGroup = new StringTemplateGroup(new InputStreamReader(ioManager.findResource(conf.getAttr("methods"))));
   }

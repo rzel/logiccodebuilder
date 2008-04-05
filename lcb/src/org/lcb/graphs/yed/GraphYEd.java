@@ -14,8 +14,8 @@ import org.lcb.xml.XMLUtils;
 public class GraphYEd implements IGraphData<XMLElement, XMLElement>
 {
   private final Map<String, XMLElement> nodes = new HashMap<String, XMLElement>();
+  private final XMLElement xmlEdges = new XMLElement("edges");
   
-  private XMLElement xmlGraph;
   private XMLElement xmlStart;
   private String keyNodeUrl;
   private String keyNodeDescription;
@@ -26,10 +26,15 @@ public class GraphYEd implements IGraphData<XMLElement, XMLElement>
     try
     {
       final XMLElement xmlYEd = XMLUtils.load(xmlData);
-      xmlGraph = xmlYEd.getChild("graph");
+      final XMLElement xmlGraph = xmlYEd.getChild("graph");
       
       fillXMLNodes(xmlGraph);      
       xmlStart = findStart();
+      if (xmlStart == null)
+      {
+        xmlStart = new XMLElement("missing start");
+        xmlStart.addAttr("id", "-1");
+      }
       
       keyNodeUrl = getID(xmlYEd.getChildren("attr.name", "url", "for","node"));
       keyNodeDescription = getID(xmlYEd.getChildren("attr.name", "description", "for","node"));
@@ -55,6 +60,8 @@ public class GraphYEd implements IGraphData<XMLElement, XMLElement>
     {
       if (element.getName().equals("node"))
         nodes.put(element.getAttr("id"), element);
+      else if (element.getName().equals("edge"))
+        xmlEdges.addChild(element);
       
       final XMLElement[] children = xmlGraph.getChildren();
       for (XMLElement graph : children)
@@ -66,9 +73,8 @@ public class GraphYEd implements IGraphData<XMLElement, XMLElement>
   {     
     final Set<String> sources = new HashSet<String>();
     final Set<String> targets = new HashSet<String>();
-   
-    final XMLElement[] edge = xmlGraph.getChildren("edge");
-    for (XMLElement element : edge)
+       
+    for (XMLElement element : xmlEdges.getChildren())
     {
       final String nSource = element.getAttr("source");
       final String nTarget = element.getAttr("target");
@@ -112,7 +118,7 @@ public class GraphYEd implements IGraphData<XMLElement, XMLElement>
   public XMLElement[] getFlows(XMLElement node)
   {    
     final String oId = node.getAttr("id");
-    final XMLElement[] xmlFlows = xmlGraph.getChildren("source", oId);
+    final XMLElement[] xmlFlows = xmlEdges.getChildren("source", oId);
     return xmlFlows;
   }
   

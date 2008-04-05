@@ -48,10 +48,15 @@ public class GraphDataWalker<T extends Object, F extends Object>
   {
     final T gRoot = graphData.getRoot();
     final F[] gFlows = graphData.getFlows(gRoot);
-    final T firstNode = graphData.getDestination(gRoot, gFlows[0]);
-
-    final NodeData root = walk(container, graphData, firstNode);
-    return root;
+    
+    if (gFlows.length > 0)
+    {
+      final T firstNode = graphData.getDestination(gRoot, gFlows[0]);
+      final NodeData root = walk(container, graphData, firstNode);
+      return root;
+    }
+    else
+      return container.newNode(gRoot, new String[0]);
   }
 
   /**
